@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/VRSYS/Core/Scenes/VRSYS-3DUI.unity
+    guid: b696740ea170a5840baa71d36430d7a2
+  - enabled: 1
+    path: Assets/VRSYS/Core/Scenes/VRSYS-DesktopUI.unity
+    guid: 52c302e3c82af8249914ea079bf2aa33
+  - enabled: 1
+    path: Assets/Scenes/Assignment-01-Build-Your-World.unity
+    guid: 3eb38f32eefed1043a35c3c941a3c6c7
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 62e0e3abe5950f842a4437d31ee77e56, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 53f10e5ede4f01c4a82a76f175227d18, type: 2}
