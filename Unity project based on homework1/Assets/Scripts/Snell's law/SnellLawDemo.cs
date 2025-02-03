@@ -11,6 +11,7 @@ public class SnellLawDemo : MonoBehaviour
 
     public LineRenderer incidentLine; // 入射光线的LineRenderer
     public LineRenderer reflectLine;  // 反射光线的LineRenderer
+    public LineRenderer refractLine;  // 折射光线的LineRenderer
 
     void Update()
     {
@@ -27,9 +28,41 @@ public class SnellLawDemo : MonoBehaviour
         Vector3 normal = transform.TransformDirection(Vector3.forward); // 法线方向为 Z 轴
         Vector3 reflectDir = Vector3.Reflect(worldIncidentDir, normal);
 
+        // 折射方向（根据Snell定律手动计算，使用负向法线）
+        // 折射方向（根据Snell定律手动计算，直接颠倒 Y 方向）
+        Vector3 refractDir = CalculateRefractDirection(
+            new Vector3(worldIncidentDir.x, worldIncidentDir.y, worldIncidentDir.z), // 直接颠倒 Y 方向
+            normal, n1, n2
+        );
+
+        // 顺时针旋转折射方向 90 度
+        // refractDir = Quaternion.Euler(-90, 0, 0) * refractDir;
+
         // 绘制光线
         DrawLine(incidentLine, intersection, worldIncidentDir, Color.red);    // 入射
         DrawLine(reflectLine, intersection, reflectDir, Color.green);         // 反射
+        if (refractDir != Vector3.zero)
+            DrawLine(refractLine, intersection, refractDir, Color.blue);      // 折射
+        else
+            Debug.Log("Total Internal Reflection happening"); // 如果折射方向为0，说明发生全反射
+    }
+
+    Vector3 CalculateRefractDirection(Vector3 incidentDir, Vector3 normal, float n1, float n2)
+    {
+        float eta = n1 / n2; // 折射率比
+        float cosTheta1 = -Vector3.Dot(incidentDir, normal); // 入射角余弦
+        float sinTheta1 = Mathf.Sqrt(1 - cosTheta1 * cosTheta1); // 入射角正弦
+        float sinTheta2 = eta * sinTheta1; // 折射角正弦
+
+        // 检查是否发生全反射
+        if (sinTheta2 > 1.0f)
+        {
+            return Vector3.zero; // 全反射，返回零向量
+        }
+
+        float cosTheta2 = Mathf.Sqrt(1 - sinTheta2 * sinTheta2); // 折射角余弦
+        Vector3 refractDir = eta * incidentDir + (eta * cosTheta1 - cosTheta2) * normal;
+        return refractDir.normalized;
     }
 
     void DrawLine(LineRenderer line, Vector3 start, Vector3 direction, Color color)
