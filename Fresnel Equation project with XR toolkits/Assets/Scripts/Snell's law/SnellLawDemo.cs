@@ -28,15 +28,8 @@ public class SnellLawDemo : MonoBehaviour
         Vector3 normal = transform.TransformDirection(Vector3.forward); // 法线方向为 Z 轴
         Vector3 reflectDir = Vector3.Reflect(worldIncidentDir, normal);
 
-        // 折射方向（根据Snell定律手动计算，使用负向法线）
-        // 折射方向（根据Snell定律手动计算，直接颠倒 Y 方向）
-        Vector3 refractDir = CalculateRefractDirection(
-            new Vector3(worldIncidentDir.x, worldIncidentDir.y, worldIncidentDir.z), // 直接颠倒 Y 方向
-            normal, n1, n2
-        );
-
-        // 顺时针旋转折射方向 90 度
-        // refractDir = Quaternion.Euler(-90, 0, 0) * refractDir;
+        // 折射方向（基于折射角公式）
+        Vector3 refractDir = CalculateRefractDirectionUsingTheta(theta1, normal, n1, n2, worldIncidentDir);
 
         // 绘制光线
         DrawLine(incidentLine, intersection, worldIncidentDir, Color.red);    // 入射
@@ -44,34 +37,47 @@ public class SnellLawDemo : MonoBehaviour
         if (refractDir != Vector3.zero)
             DrawLine(refractLine, intersection, refractDir, Color.blue);      // 折射
         else
-            Debug.Log("Total Internal Reflection happening"); // 如果折射方向为0，说明发生全反射
+            Debug.Log("Total internal Reflection happening");
     }
 
-    Vector3 CalculateRefractDirection(Vector3 incidentDir, Vector3 normal, float n1, float n2)
+    Vector3 CalculateRefractDirectionUsingTheta(float theta1, Vector3 normal, float n1, float n2, Vector3 worldIncidentDir)
     {
-        float eta = n1 / n2; // 折射率比
-        float cosTheta1 = -Vector3.Dot(incidentDir, normal); // 入射角余弦
-        float sinTheta1 = Mathf.Sqrt(1 - cosTheta1 * cosTheta1); // 入射角正弦
-        float sinTheta2 = eta * sinTheta1; // 折射角正弦
+        float eta = n1 / n2;
+        float sinTheta1 = Mathf.Sin(theta1);
+        float sinTheta2 = eta * sinTheta1;
 
-        // 检查是否发生全反射
-        if (sinTheta2 > 1.0f)
+        // 检查全反射
+        if (Mathf.Abs(sinTheta2) > 1.0f)
         {
-            return Vector3.zero; // 全反射，返回零向量
+            return Vector3.zero;
         }
 
-        float cosTheta2 = Mathf.Sqrt(1 - sinTheta2 * sinTheta2); // 折射角余弦
-        Vector3 refractDir = eta * incidentDir + (eta * cosTheta1 - cosTheta2) * normal;
-        return refractDir.normalized;
+        // 计算折射角 theta2
+        float theta2 = Mathf.Asin(sinTheta2);
+
+        // 确定折射方向的符号（假设法线为 Z 轴正方向）
+        // 折射方向在 YOZ 平面内，且与法线反向
+        float sign = -Mathf.Sign(Vector3.Dot(worldIncidentDir, normal));
+
+        // 构造折射方向向量
+        Vector3 refractDir = new Vector3(
+            0,
+            -Mathf.Cos(theta2), // Z 分量（向下）
+            Mathf.Sin(theta2) * sign  // Y 分量
+                    
+        ).normalized;
+
+        // 转换到世界坐标系
+        return transform.TransformDirection(refractDir);
     }
 
     void DrawLine(LineRenderer line, Vector3 start, Vector3 direction, Color color)
     {
         if (line == null) return;
 
-        line.positionCount = 2; // 设置LineRenderer的点数
-        line.SetPosition(0, start); // 起点
-        line.SetPosition(1, start + direction * 5); // 终点（光线长度为5）
+        line.positionCount = 2;
+        line.SetPosition(0, start);
+        line.SetPosition(1, start + direction * 5);
         line.startColor = color;
         line.endColor = color;
     }
