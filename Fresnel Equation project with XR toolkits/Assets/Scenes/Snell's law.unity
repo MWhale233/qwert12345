@@ -137,8 +137,9 @@ GameObject:
   - component: {fileID: 128120905}
   - component: {fileID: 128120909}
   - component: {fileID: 128120910}
+  - component: {fileID: 128120911}
   m_Layer: 0
-  m_Name: intersectionPoint
+  m_Name: intersectionPoint_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,6 +254,20 @@ MonoBehaviour:
   incidentLine: {fileID: 220411789}
   reflectLine: {fileID: 1504826499}
   refractLine: {fileID: 1780601169}
+  polarization: 0
+--- !u!114 &128120911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128120904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abcb919c50827840bffa5c4de2f1ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snellLawDemo: {fileID: 128120910}
 --- !u!1 &170906953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,7 +1474,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1807,6 +1822,7 @@ MonoBehaviour:
   incidentLine: {fileID: 1034544773}
   reflectLine: {fileID: 1098805518}
   refractLine: {fileID: 1296621425}
+  polarization: 1
 --- !u!114 &1503827700
 MonoBehaviour:
   m_ObjectHideFlags: 0

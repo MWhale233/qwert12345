@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class SnellLawDemo : MonoBehaviour
 {
     public float n1 = 1.0f; // 上层介质折射率
@@ -18,6 +20,37 @@ public class SnellLawDemo : MonoBehaviour
     public Vector3 RefractDirection { get; private set; }
     public float ReflectAngle { get; private set; }   // 与法线的夹角（度数）
     public float RefractAngle { get; private set; }     // 与法线的夹角（度数）
+    // 定义一个枚举类型，表示偏振类型
+    public enum PolarizationType
+    {
+        S, // s波
+        P  // p波
+    }
+
+
+    // 新增public属性，用于指定光线偏振类型，提供两个选项：s波 或 p波
+    public PolarizationType polarization = PolarizationType.S;
+    // 在 Start() 或 Update() 方法中设置 LineRenderer 宽度
+    void Start()
+    {
+        if (incidentLine != null)
+        {
+            incidentLine.startWidth = 0.1f;  // 设置起始宽度
+            incidentLine.endWidth = 0.1f;    // 设置结束宽度
+        }
+
+        if (reflectLine != null)
+        {
+            reflectLine.startWidth = 0.1f;
+            reflectLine.endWidth = 0.1f;
+        }
+
+        if (refractLine != null)
+        {
+            refractLine.startWidth = 0.1f;
+            refractLine.endWidth = 0.1f;
+        }
+    }
 
     void Update()
     {
@@ -53,15 +86,22 @@ public class SnellLawDemo : MonoBehaviour
         DrawLine(incidentLine, intersection, IncidentDirection, Color.red);    // 入射光线
         DrawLine(reflectLine, intersection, ReflectDirection, Color.green);      // 反射光线
         if (RefractDirection != Vector3.zero)
+        {
+            ShowRefractLine();
             DrawLine(refractLine, intersection, RefractDirection, Color.blue);   // 折射光线
-        else
-            Debug.Log("发生全反射");
+        }
 
-        Debug.Log($"Incident Dir: {IncidentDirection}");
-        Debug.Log($"Reflect Dir: {ReflectDirection}");
-        Debug.Log($"Refract Dir: {RefractDirection}");
-        Debug.Log($"Reflect Angle: {ReflectAngle - 90}");
-        Debug.Log($"Refract Angle: {90 - RefractAngle}");
+        else
+        {
+            HideRefractLine();
+            Debug.Log("TIR happening");
+        }
+
+        // Debug.Log($"Incident Dir: {IncidentDirection}");
+        // Debug.Log($"Reflect Dir: {ReflectDirection}");
+        // Debug.Log($"Refract Dir: {RefractDirection}");
+        // Debug.Log($"Reflect Angle: {ReflectAngle - 90}");
+        // Debug.Log($"Refract Angle: {90 - RefractAngle}");
 
     }
 
@@ -102,5 +142,19 @@ public class SnellLawDemo : MonoBehaviour
         line.SetPosition(1, start + direction * 5);
         line.startColor = color;
         line.endColor = color;
+    }
+    void HideRefractLine()
+    {
+        if (refractLine != null)
+        {
+            refractLine.enabled = false;  // 禁用折射光线的 LineRenderer
+        }
+    }
+    void ShowRefractLine()
+    {
+        if (refractLine != null)
+        {
+            refractLine.enabled = true;  // 启用折射光线的 LineRenderer
+        }
     }
 }
