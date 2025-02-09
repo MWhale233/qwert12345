@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfb6b176f171184e902cf34f1407316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  n1: 1
+  n1: 4
   n2: 1.5
   incidentAngle: 30
   incidentLine: {fileID: 220411789}
@@ -370,7 +370,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.09195365
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1781,6 +1781,7 @@ GameObject:
   - component: {fileID: 1503827701}
   - component: {fileID: 1503827700}
   - component: {fileID: 1503827699}
+  - component: {fileID: 1503827704}
   m_Layer: 0
   m_Name: intersectionPoint
   m_TagString: Untagged
@@ -1898,6 +1899,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503827697}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1503827704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503827697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abcb919c50827840bffa5c4de2f1ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snellLawDemo: {fileID: 1503827699}
 --- !u!1 &1504826498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,7 +1949,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 86acaef3be692f64b8b9f85b7cc98aab, type: 2}
+  - {fileID: 2100000, guid: efa71004792fa824b9fabe324c8dcbeb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2098,7 +2112,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 355613821904eee49a4e5504b3082b14, type: 2}
+  - {fileID: 2100000, guid: efa71004792fa824b9fabe324c8dcbeb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
