@@ -46,7 +46,7 @@ public class FresnelLawDemo : MonoBehaviour
         float sinTheta_t = (n1 / n2) * Mathf.Sin(theta_i);
         if (Mathf.Abs(sinTheta_t) > 1.0f)
         {
-            Debug.Log("TIR happening_Fresnel");
+            // Debug.Log("TIR happening_Fresnel");
             return;
         }
         float theta_t = Mathf.Asin(sinTheta_t);

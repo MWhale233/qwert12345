@@ -1,0 +1,54 @@
+{
+    "name": "RightStickActions",
+    "maps": [
+        {
+            "name": "RightStickActions",
+            "id": "40f33cc9-185a-4159-91b7-88ed04b7b613",
+            "actions": [
+                {
+                    "name": "AdjustIncidentAngle",
+                    "type": "Value",
+                    "id": "89640280-7226-41f7-8a94-e691d19bcc21",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RotateIntersection",
+                    "type": "Value",
+                    "id": "c4f89aff-101f-45eb-b931-a3e661d6ee17",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ee0a1be3-70d0-4462-980c-6391d184b0cf",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AdjustIncidentAngle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15c0b7e6-3a79-4c41-86cf-546583069af2",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateIntersection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
