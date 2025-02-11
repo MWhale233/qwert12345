@@ -94,7 +94,7 @@ public class SnellLawDemo : MonoBehaviour
         else
         {
             HideRefractLine();
-            Debug.Log("TIR happening");
+            // Debug.Log("TIR happening");
         }
 
         // Debug.Log($"Incident Dir: {IncidentDirection}");
