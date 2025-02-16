@@ -1,0 +1,226 @@
+// #pragma kernel CSMain
+// #pragma kernel InitTexture
+
+// RWTexture3D<float4> Result;
+// int3 _TexSize;
+
+// [numthreads(8,8,8)]
+// void InitTexture (uint3 id : SV_DispatchThreadID) {
+//     if (id.x < _TexSize.x && id.y < _TexSize.y && id.z < _TexSize.z) {
+//         Result[id.xyz] = float4(0, 1, 1, 1); // 绿色
+//     }
+// }
+
+
+
+
+
+
+// // WavePropagation.compute
+// #pragma kernel CSMain
+
+// // 输出 3D 纹理（单通道存储光强）
+// // RWTexture3D<float> Result;
+// RWTexture3D<float4> Result;
+
+// // 体积纹理的尺寸，由 C# 脚本传入
+// int3 _TexSize;
+
+// // 参数（通过 Inspector 可调）
+// float _ApertureRadius;       // 孔径半径（单位与体积坐标一致，默认设定 x,y ∈ [-1,1]）
+// float _WaveLength;           // 波长（单位：纳米）
+// float _MaxDepth;             // 最大传播深度（z轴范围 0 ~ _MaxDepth）
+// int   _Samples;              // 孔径积分采样点数（例如 32）
+
+// #define PI 3.141592653589793
+
+
+
+// // // WavePropagation.compute
+// // [numthreads(8,8,8)]
+// // void CSMain (uint3 id : SV_DispatchThreadID) {
+// //     if (id.x < _TexSize.x && id.y < _TexSize.y && id.z < _TexSize.z) {
+// //         // 测试输出：根据深度渐变着色
+// //         float zRatio = (float)id.z / (float)_TexSize.z;
+// //         Result[id.xyz] = float4(zRatio, 0, 0, 1); // 红色渐变
+// //     }
+// // }
+
+// [numthreads(8,8,8)]
+// void CSMain (uint3 id : SV_DispatchThreadID) {
+//     if (id.x < _TexSize.x && id.y < _TexSize.y && id.z < _TexSize.z) {
+//         Result[id.xyz] = float4(1, 0, 0, 1); // 让整个 3D 纹理填充红色
+//     }
+// }
+
+
+
+// [numthreads(8,8,8)]
+// void CSMain (uint3 id : SV_DispatchThreadID)
+// {
+//     // 保证线程在纹理范围内
+//     if (id.x >= _TexSize.x || id.y >= _TexSize.y || id.z >= _TexSize.z)
+//         return;
+
+//     // 将纹理坐标转换为物理空间坐标
+//     // x,y 归一化到 [-1, 1]
+//     float fx = ( (id.x + 0.5) / _TexSize.x ) * 2.0 - 1.0;
+//     float fy = ( (id.y + 0.5) / _TexSize.y ) * 2.0 - 1.0;
+//     // z 坐标按 _MaxDepth 线性分布
+//     float fz = (id.z + 0.5) / _TexSize.z * _MaxDepth;
+//     float3 pos = float3(fx, fy, fz);
+
+//     // 计算波数 k = 2pi / wavelength，其中 _WaveLength 单位为纳米，转成米
+//     float k = 2.0 * PI / (_WaveLength * 1e-9);
+
+//     // 对孔径区域做积分
+//     float sum = 0.0;
+//     // 为了归一化，计算每个积分点的权重
+//     float weight = 1.0 / (_Samples * _Samples);
+
+//     // 穷举孔径采样（在二维平面 z=0）
+//     for (int i = 0; i < _Samples; i++) {
+//         // u 从 -1 到 1
+//         float u = ( (i + 0.5) / _Samples ) * 2.0 - 1.0;
+//         for (int j = 0; j < _Samples; j++) {
+//             float v = ( (j + 0.5) / _Samples ) * 2.0 - 1.0;
+//             // 将 (u,v) 映射到孔径圆：实际坐标 = (u,v)*_ApertureRadius
+//             float2 aperturePos = float2(u, v) * _ApertureRadius;
+//             // 若超出圆形孔径，则跳过
+//             if (length(float2(u, v)) > 1.0)
+//                 continue;
+
+//             // 从孔径点 (aperturePos.x, aperturePos.y, 0) 到 pos 的矢量
+//             float3 delta = pos - float3(aperturePos, 0.0);
+//             float dist = length(delta);
+//             // 防止除以0（理论上 pos.z>0，所以一般不会发生）
+//             if (dist < 1e-6) continue;
+//             // 相位：这里计算 (dist - pos.z) 相当于扣除了直线传播的常数项
+//             float phase = k * (dist - pos.z);
+//             // 累加贡献，使用余弦项（这里仅取实部，简单近似）
+//             sum += cos(phase) / dist;
+//         }
+//     }
+//     // 可选：对积分结果进行归一化和缩放（根据经验调节常数，这里取 100 作为示例）a
+//     // float intensity = (sum * weight) * (sum * weight) * 10.0;
+//     // intensity = log(1 + intensity) / log(1 + 100.0); // 归一化到 [0,1]
+//     // intensity = saturate(intensity / 10000.0); // 适当调整 10.0 这个缩放因子
+
+//     // 写入结果纹理
+//     // Result[id.xyz] = intensity;
+//     // float normalizedIntensity = saturate(intensity); // 确保值在 0~1 之间
+//     // Result[id.xyz] = float4(normalizedIntensity, 0, 1 - normalizedIntensity, 1);
+
+//     // float debugIntensity = intensity / 10.0;  // 先随便除个数，看看有没有过曝
+//     // Result[id.xyz] = float4(debugIntensity, debugIntensity, debugIntensity, 1);
+//     float debugSum = abs(sum) / 0.000001; // 先随便除个数
+//     Result[id.xyz] = float4(debugSum, debugSum, debugSum, 1);
+
+//     // float intensity = (sum * weight) * (sum * weight);
+//     // intensity = log(1 + intensity) / log(1 + 1000.0); // 归一化到 0-1
+//     // Result[id.xyz] = float4(intensity, 0, 1 - intensity, 1);
+// }
+// [numthreads(8,8,8)]
+// void CSMain (uint3 id : SV_DispatchThreadID) {
+//     if (id.x < _TexSize.x && id.y < _TexSize.y && id.z < _TexSize.z) {
+//         // 输出z轴渐变红色
+//         float zRatio = (float)id.z / (float)_TexSize.z;
+//         Result[id.xyz] = float4(zRatio, 0, 0, 1);
+//     }
+// }
+
+
+#pragma kernel CSMain
+
+RWTexture3D<float4> Result;
+int3 _TexSize;
+float _ApertureRadius;
+float _WaveLength;
+float _MaxDepth;
+int _Samples;
+
+#define PI 3.141592653589793
+
+[numthreads(8,8,8)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+    if (any(id >= _TexSize)) return;
+
+    // 坐标转换
+    float3 pos = float3(
+        (id.x + 0.5) / _TexSize.x * 2 - 1,
+        (id.y + 0.5) / _TexSize.y * 2 - 1,
+        (id.z + 0.5) / _TexSize.z * _MaxDepth
+    );
+
+    float k = 2 * PI / (_WaveLength * 1e-9);
+    float sum = 0;
+    float weight = 1.0 / (_Samples * _Samples);
+
+    for (int i = 0; i < _Samples; i++) {
+        float u = (i + 0.5) * 2.0/_Samples - 1;
+        for (int j = 0; j < _Samples; j++) {
+            float v = (j + 0.5) * 2.0/_Samples - 1;
+            
+            if (u*u + v*v > 1) continue;
+            
+            float2 aperturePos = float2(u, v) * _ApertureRadius;
+            float3 delta = pos - float3(aperturePos, 0);
+            float dist = length(delta);
+            
+            if (dist < 1e-6) continue;
+            
+            float phase = k * (dist - pos.z);
+            sum += cos(phase) / dist;
+        }
+    }
+    // 暂时注释所有后处理计算
+    // Result[id.xyz] = float4(intensity.xxx, 1);
+
+    //物理正确的强度计算
+    float intensity = (sum * weight) * (sum * weight);
+    intensity *= 1e6 / (pos.z * pos.z); // 距离衰减
+    
+    // 动态范围控制
+    intensity = log(1 + intensity) / log(1 + 1e6); // 压缩到[0,1]
+    intensity = saturate(intensity * 3.0); // 增强对比度
+    
+    Result[id.xyz] = float4(intensity.xxx, 1);
+
+
+
+    // // 在写入Result前添加
+    // float3 debugColor;
+    // if(intensity < 0.5) {
+    //     debugColor = float3(0, 0, 1); // 蓝色表示低强度
+    // } else if(intensity < 1.5) {
+    //     debugColor = float3(0, 1, 0); // 绿色表示中等强度
+    // } else {
+    //     debugColor = float3(1, 0, 0); // 红色表示高强度
+    // }
+    // Result[id.xyz] = float4(debugColor, 1);
+
+    // Result[id.xyz] = float4(
+    //     (float)id.x / _TexSize.x,
+    //     (float)id.y / _TexSize.y,
+    //     (float)id.z / _TexSize.z,
+    //     1
+    // );
+
+    // // 临时替换为简单计算
+    // float intensity = pos.z / _MaxDepth;
+    // Result[id.xyz] = float4(intensity.xxx, 1);
+}
+
+
+// [numthreads(8,8,8)]
+// void CSMain (uint3 id : SV_DispatchThreadID) {
+//     // 强制输出测试颜色
+//     Result[id.xyz] = float4(
+//         (float)id.x / _TexSize.x,
+//         (float)id.y / _TexSize.y,
+//         (float)id.z / _TexSize.z,
+//         1
+//     );
+    
+//     return; // 注释掉原有计算逻辑
+// }
