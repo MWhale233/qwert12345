@@ -1,0 +1,61 @@
+// WavePropagation.compute
+#pragma kernel CSMain
+
+RWTexture3D<float> Result;
+int3 _TexSize;
+float _ApertureRadius;
+float _WaveLength;
+float _MaxDepth;
+int _Samples;
+float _XYScale;
+
+#define PI 3.14159265f
+
+[numthreads(8,8,8)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+    // 物理坐标转换（单位：米）
+    float3 pos = float3(
+        ((id.x + 0.5f)/_TexSize.x * 2.0f - 1.0f) * _XYScale,
+        ((id.y + 0.5f)/_TexSize.y * 2.0f - 1.0f) * _XYScale,
+        (id.z + 0.5f)/_TexSize.z * _MaxDepth
+    );
+
+    const float k = 2.0f * PI / (_WaveLength * 1e-9f);
+    float sum_real = 0.0f;
+    float sum_imag = 0.0f;
+    
+    const float dr = _ApertureRadius / _Samples;
+    const float dTheta = 2.0f * PI / 8.0f; // 8个角度采样
+
+    // 优化循环结构
+    [unroll(32)] // 根据_Samples=32设置
+    for(int r=0; r<_Samples; ++r) {
+        const float radius = (r + 0.5f) * dr;
+        
+        [unroll] // 内层循环自动展开
+        for(int theta=0; theta<8; ++theta) {
+            const float angle = theta * dTheta;
+            const float2 aperturePos = radius * float2(
+                cos(angle),
+                sin(angle)
+            );
+
+            const float3 delta = pos - float3(aperturePos, 0.0f);
+            const float dist = length(delta);
+            
+            // 菲涅尔衍射修正项
+            const float phase = k * (dist - pos.z); 
+            const float attenuation = 1.0f / (dist * dist + 1e-6f);
+            
+            sum_real += cos(phase) * attenuation;
+            sum_imag += sin(phase) * attenuation;
+        }
+    }
+
+    // 强度计算（加入归一化系数）
+    const float intensity = (sum_real*sum_real + sum_imag*sum_imag) 
+                         * _ApertureRadius * _ApertureRadius 
+                         / (_Samples * 8.0f);
+    
+    Result[id] = intensity * 1e6f; // 适当缩放显示范围
+}
