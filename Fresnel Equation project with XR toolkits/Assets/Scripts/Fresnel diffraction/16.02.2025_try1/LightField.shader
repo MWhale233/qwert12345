@@ -2,10 +2,10 @@ Shader "Custom/LightField"
 {
     Properties
     {
-        _WaveLength ("波长 (nm)", Range(300,700)) = 632.8
-        _Aperture ("孔径半径", Range(0.01,1.5)) = 0.0001
-        _MaxDistance ("最大距离", Float) = 10.0
-        _RayStep ("光线步长", Range(0.0001,0.001)) = 0.0001
+        _WaveLength ("_WaveLength (nm)", Range(300,700)) = 632.8
+        _Aperture ("_Aperture", Range(0.01,1.5)) = 0.0001
+        _MaxDistance ("_MaxDistance", Float) = 10.0
+        _RayStep ("_RayStep", Range(0.0001,0.001)) = 0.0001
     }
 
     SubShader
