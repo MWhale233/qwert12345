@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1706.6667
     height: 869.3334
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 120
+  controlID: 94
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 1
-  controlID: 121
+  controlID: 95
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 8096}
   vertical: 0
-  controlID: 122
+  controlID: 96
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -345,23 +345,23 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts/Fresnel diffraction/16.02.2025_try2
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts/Fresnel diffraction/16.02.2025_try2
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Codes\qwert12345\qwert12345\Fresnel Equation project with
     XR toolkits
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 139}
-    m_SelectedIDs: 468d0000
-    m_LastClickedID: 36166
-    m_ExpandedIDs: 00000000748b0000768b0000788b0000488d000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 120}
+    m_SelectedIDs: b48d0000
+    m_LastClickedID: 36276
+    m_ExpandedIDs: 00000000708b0000728b0000748b0000548d000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -389,7 +389,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000748b0000768b0000788b0000
+    m_ExpandedIDs: 00000000708b0000728b0000748b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -441,7 +441,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 26}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 368
@@ -477,9 +477,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d48d0000
+      m_SelectedIDs: e6770000
       m_LastClickedID: 0
-      m_ExpandedIDs: 9af5ffff2cfbffff
+      m_ExpandedIDs: 2cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -762,9 +762,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.65351295, y: -0.30040932, z: -4.0780764}
+    m_Target: {x: 4.5259953, y: 15.7055645, z: 21.974297}
     speed: 2
-    m_Value: {x: 0.65351295, y: -0.30040932, z: -4.0780764}
+    m_Value: {x: 4.5259953, y: 15.7055645, z: 21.974297}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -811,13 +811,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.24630035, y: 0.45974767, z: -0.1343936, w: 0.8425624}
+    m_Target: {x: -0.067346275, y: -0.8188001, z: 0.0982522, w: -0.56161946}
     speed: 2
-    m_Value: {x: 0.24629977, y: 0.45974657, z: -0.13439327, w: 0.84256035}
+    m_Value: {x: -0.06749226, y: -0.8179408, z: 0.09814915, w: -0.562836}
   m_Size:
-    m_Target: 18.234364
+    m_Target: 18.81386
     speed: 2
-    m_Value: 18.234364
+    m_Value: 18.81386
   m_Ortho:
     m_Target: 0
     speed: 2
