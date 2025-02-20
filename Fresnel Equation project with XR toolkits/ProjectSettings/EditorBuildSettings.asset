@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Fresnel diffraction_Volume_deepseek.unity
     guid: f9cd44526ad385b4fb1a9bbb2cdfdf57
+  - enabled: 1
+    path: Assets/Scenes/Fresnel propagation_17.02_modified.unity
+    guid: 84bbc3bfcdfcd6e43a0e6f6734936601
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 62e0e3abe5950f842a4437d31ee77e56, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 53f10e5ede4f01c4a82a76f175227d18, type: 2}
