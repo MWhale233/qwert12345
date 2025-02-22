@@ -41,8 +41,8 @@ def fresnel_propagation(U0, z, wavelength, dx):
 # ----------------参数设置-------------------
 wavelength = 0.632e-6  # 波长，例如 0.5 微米
 # L = 0.02            # 模拟窗口尺寸（单位可以是毫米或任意归一化单位），x,y 范围为 [-L/2, L/2]
-N = 256            # x,y 平面的分辨率（建议足够高以获得细节）
-radius = 0.0006       # 圆孔半径
+N = 256            # 256 x,y 平面的分辨率（建议足够高以获得细节）
+radius = 0.0009       # 圆孔半径
 num_z = 300       # 沿 z 方向取 10 个采样点
 L = 4 * radius
 
@@ -72,35 +72,47 @@ np.save('fresnel_diffraction_intensity.npy', intensity_data)
 intensity_data.astype(np.float32).tofile('fresnel_diffraction_intensity.raw')
 
 # ----------------可视化其中一个 z 平面-------------------
-# plt.figure(figsize=(6,5))
-# plt.imshow(intensity_data[-1], extent=[-L/2, L/2, -L/2, L/2], cmap='inferno')
-# plt.title(f'Diffraction intensity at z = {z_values[-1]:.2f}')
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.colorbar(label='Intensity')
-# plt.show()
+# 生成 x, y 坐标数组（假设在 generate_circular_aperture 中已经生成）
+x = np.linspace(-L/2, L/2, N)
+y = np.linspace(-L/2, L/2, N)
 
+# 找到 x 和 y 坐标在 [-radius, radius] 内对应的索引
+x_idx = np.where(np.abs(x) <= radius)[0]
+y_idx = np.where(np.abs(y) <= radius)[0]
 
+# 裁剪最后一个 z 平面的数据
+cropped_data = intensity_data[-1][np.ix_(y_idx, x_idx)]
 
-# 假设 N 为偶数，y=0对应的行索引为 idx_y
-idx_y = N // 2
-slice_xz = intensity_data[:, idx_y, :]
-
-# 逆时针旋转90度
-rotated_slice = np.rot90(slice_xz, k=1)  # k=1 表示旋转90度
-
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 使用支持中文的字体
-plt.rcParams['axes.unicode_minus'] = False    # 解决负号显示问题
-
-plt.figure(figsize=(8, 6))
-# 注意：旋转后，原来的 x 轴和 z 轴会交换
-# 这里我们将 extent 调整为：
-#   横轴对应原 z 方向 [z_values[0], z_values[-1]]
-#   纵轴对应原 x 方向 [-L/2, L/2]
-plt.imshow(rotated_slice, extent=[z_values[0], z_values[-1], -L/2, L/2],
-           aspect='auto', cmap='RdBu_r')
-plt.xlabel('z')   # 经过旋转后，原来的 z 轴变为横轴
-plt.ylabel('x')   # 经过旋转后，原来的 x 轴变为纵轴
-plt.title(' xoz plane(y=0)')
+# 可视化裁剪后的数据，extent 对应于实际的物理坐标
+plt.figure(figsize=(6,5))
+plt.imshow(cropped_data, extent=[-radius, radius, -radius, radius],
+           cmap='inferno')
+plt.title(f'Diffraction intensity at z = {z_values[-1]:.2f}')
+plt.xlabel('x')
+plt.ylabel('y')
 plt.colorbar(label='Intensity')
 plt.show()
+
+
+# # 假设 N 为偶数，y=0对应的行索引为 idx_y
+# idx_y = N // 2
+# slice_xz = intensity_data[:, idx_y, :]
+#
+# # 逆时针旋转90度
+# rotated_slice = np.rot90(slice_xz, k=1)  # k=1 表示旋转90度
+#
+# plt.rcParams['font.sans-serif'] = ['SimHei']  # 使用支持中文的字体
+# plt.rcParams['axes.unicode_minus'] = False    # 解决负号显示问题
+#
+# plt.figure(figsize=(8, 6))
+# # 注意：旋转后，原来的 x 轴和 z 轴会交换
+# # 这里我们将 extent 调整为：
+# #   横轴对应原 z 方向 [z_values[0], z_values[-1]]
+# #   纵轴对应原 x 方向 [-L/2, L/2]
+# plt.imshow(rotated_slice, extent=[z_values[0], z_values[-1], -L, L],
+#            aspect='auto', cmap='RdBu_r')
+# plt.xlabel('z')   # 经过旋转后，原来的 z 轴变为横轴
+# plt.ylabel('x')   # 经过旋转后，原来的 x 轴变为纵轴
+# plt.title(' xoz plane(y=0)')
+# plt.colorbar(label='Intensity')
+# plt.show()
