@@ -1,107 +1,74 @@
-Shader "Custom/VolumeRendering"
+Shader "Custom/VolumeDataRendering"
 {
     Properties
     {
-        _VolumeTex ("Volume Texture", 3D) = "white" {}
-        _StepSize ("Step Size", Range(0.001, 0.1)) = 0.01
-        _DensityScale ("Density Scale", Range(0.1, 10)) = 1.0
-        _AlphaScale ("Alpha Scale", Range(0.01, 1)) = 0.1
+        _VolumeTex ("Volume Texture", 3D) = "" {}
+        _StepSize ("Step Size", Float) = 0.005
+        _NumSteps ("Number of Steps", Int) = 100
     }
-
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
-        Blend SrcAlpha OneMinusSrcAlpha
-        Cull Off
-        ZWrite Off
-
+        Tags { "RenderType"="Opaque" }
         Pass
         {
+            ZWrite Off
+            Cull Off
+            Fog { Mode Off }
+
             CGPROGRAM
+            #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
-
             #include "UnityCG.cginc"
 
             sampler3D _VolumeTex;
             float _StepSize;
-            float _DensityScale;
-            float _AlphaScale;
+            int _NumSteps;
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float3 normal : NORMAL;
+                float2 uv     : TEXCOORD0;
             };
 
             struct v2f
             {
-                float4 vertex : SV_POSITION;
-                float3 worldPos : TEXCOORD0;
-                float3 localCamPos : TEXCOORD1;
-                float3 localRayDir : TEXCOORD2;
+                float4 vertex   : SV_POSITION;
+                float3 rayOrigin: TEXCOORD0;
+                float3 rayDir   : TEXCOORD1;
             };
 
-            bool RayAABBIntersection(float3 origin, float3 dir, out float entry, out float exit)
-            {
-                float3 t0 = (0.0 - origin) / dir;
-                float3 t1 = (1.0 - origin) / dir;
-                float3 tmin = min(t0, t1);
-                float3 tmax = max(t0, t1);
-                
-                entry = max(max(tmin.x, tmin.y), tmin.z);
-                exit = min(min(tmax.x, tmax.y), tmax.z);
-                return exit > entry && exit > 0;
-            }
-
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.localCamPos = mul(unity_WorldToObject, float4(_WorldSpaceCameraPos, 1)).xyz;
-                o.localRayDir = normalize(mul(unity_WorldToObject, float4(o.worldPos - _WorldSpaceCameraPos, 0)).xyz);
+                
+                // 假设体数据位于 [0,1]^3 内，使用物体中心作为射线目标
+                float3 boxCenter = float3(0.5, 0.5, 0.5);
+                o.rayOrigin = _WorldSpaceCameraPos;
+                o.rayDir = normalize(boxCenter - _WorldSpaceCameraPos);
                 return o;
             }
 
-            fixed4 frag (v2f input) : SV_Target // 修改参数名避免冲突
+            fixed4 frag(v2f i) : SV_Target
             {
-                float3 rayDir = normalize(input.localRayDir);
+                float accum = 0;
+                // 从摄像机位置沿射线方向采样，使用固定次数的采样步骤
+                float3 pos = i.rayOrigin;
                 
-                float entry, exit;
-                if(!RayAABBIntersection(input.localCamPos, rayDir, entry, exit))
-                    discard;
-                
-                entry = max(entry, 0);
-                float3 startPos = input.localCamPos + rayDir * entry;
-                float3 endPos = input.localCamPos + rayDir * exit;
-                float maxDistance = distance(startPos, endPos);
-                
-                float accumDensity = 0;
-                float3 currentPos = startPos;
-                int numSteps = (int)(maxDistance / _StepSize);
-                
-                // 修改循环变量名并修正条件判断
-                for(int stepIdx = 0; stepIdx < numSteps; stepIdx++)
+                // 固定循环次数，避免动态退出循环
+                for (int step = 0; step < 100; step++)
                 {
-                    // 修正条件判断的括号
-                    if(any(currentPos < 0)) break; 
-                    if(any(currentPos > 1)) break;
-                    
-                    float density = tex3D(_VolumeTex, currentPos).r * _DensityScale;
-                    accumDensity += density * _StepSize;
-                    
-                    if(accumDensity > 20) break;
-                    
-                    currentPos += rayDir * _StepSize;
+                    float3 samplePos = saturate(pos);  // 限制在 [0,1] 范围内
+                    float sample = tex3D(_VolumeTex, samplePos).r;
+                    accum += sample * _StepSize;
+                    pos += i.rayDir * _StepSize;
                 }
                 
-                float alpha = 1 - exp(-accumDensity * _AlphaScale);
-                return fixed4(alpha.xxx, alpha);
+                return fixed4(accum, accum, accum, 1.0);
             }
             ENDCG
         }
     }
-    Fallback "Diffuse"
+    FallBack "Diffuse"
 }
