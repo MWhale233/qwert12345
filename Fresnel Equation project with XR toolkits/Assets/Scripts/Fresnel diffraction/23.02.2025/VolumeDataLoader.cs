@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class VolumeDataLoader : MonoBehaviour
 {
     // 数据文件路径（建议放在 Resources 或 StreamingAssets 文件夹中）
     public string filePath = "Assets/Field Data/fresnel_diffraction_intensity_normalized.raw";
+    public string textureSavePath = "Assets/VolumeTextures/GeneratedTexture3D.asset";
     public int width = 256;  // x 方向分辨率
     public int height = 256; // y 方向分辨率
     public int depth = 100;  // z 方向采样点数
@@ -42,6 +46,17 @@ public class VolumeDataLoader : MonoBehaviour
         Texture3D volumeTexture = new Texture3D(width, height, depth, TextureFormat.RFloat, false);
         volumeTexture.SetPixels(colors);
         volumeTexture.Apply();
+        #if UNITY_EDITOR
+                // 确保目录存在
+                Directory.CreateDirectory(Path.GetDirectoryName(textureSavePath));
+                // 删除旧资源（如果存在）
+                if(File.Exists(textureSavePath)) 
+                    AssetDatabase.DeleteAsset(textureSavePath);
+                // 创建新资源
+                AssetDatabase.CreateAsset(volumeTexture, textureSavePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("3D 纹理已保存至：" + textureSavePath);
+        #endif
 
         // 将生成的 3D 纹理赋值给材质
         if (volumeMaterial != null)
