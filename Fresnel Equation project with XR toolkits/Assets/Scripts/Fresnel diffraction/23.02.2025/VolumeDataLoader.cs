@@ -43,7 +43,10 @@ public class VolumeDataLoader : MonoBehaviour
         }
 
         // 创建 3D 纹理（建议使用 TextureFormat.RFloat 或者 TextureFormat.RGBAFloat，根据数据需求）
-        Texture3D volumeTexture = new Texture3D(width, height, depth, TextureFormat.RFloat, false);
+        Texture3D volumeTexture = new Texture3D(width, height, depth, TextureFormat.RFloat, false)
+        {
+            wrapMode = TextureWrapMode.Clamp // 关键设置：禁止纹理重复
+        };
         volumeTexture.SetPixels(colors);
         volumeTexture.Apply();
         #if UNITY_EDITOR
@@ -66,7 +69,7 @@ public class VolumeDataLoader : MonoBehaviour
             // 动态设置其他Shader参数（可选）
             volumeMaterial.SetFloat("_Alpha", 0.05f);
             volumeMaterial.SetFloat("_StepSize", 0.01f);
-            
+
             Debug.Log("3D纹理已应用到指定 volumeMaterial！");
         }
         else

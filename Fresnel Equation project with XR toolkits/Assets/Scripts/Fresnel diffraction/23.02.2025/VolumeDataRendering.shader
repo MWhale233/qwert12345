@@ -11,6 +11,9 @@ Shader "Unlit/VolumeDataRendering"
         _VolumeTex ("Volume Texture", 3D) = "white" {}
         _Alpha ("Alpha", float) = 0.02
         _StepSize ("Step Size", float) = 0.01
+
+        [Toggle(_CLIPPING)] _Clipping("Enable Clipping", Float) = 1
+        _ClipPlane("Clip Plane", Vector) = (0,1,0,0) // (normal.x, normal.y, normal.z, distance)
     }
     
 
@@ -25,6 +28,10 @@ Shader "Unlit/VolumeDataRendering"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+            // 在CGPROGRAM添加
+            #pragma shader_feature _CLIPPING
+            float4 _ClipPlane;
 
             #include "UnityCG.cginc"
 
@@ -109,6 +116,15 @@ Shader "Unlit/VolumeDataRendering"
             // }
             fixed4 frag(v2f i) : SV_Target
             {
+                // 转换到世界空间
+                float3 worldPos = mul(unity_ObjectToWorld, float4(i.objectVertex, 1)).xyz;
+                // 平面剪切计算
+                #if _CLIPPING
+
+                    float distance = dot(_ClipPlane.xyz, worldPos) + _ClipPlane.w;
+                    clip(distance > 0 ? -1 : 1); // 保留平面下方
+                #endif
+
                 // 校正采样坐标（假设物体中心在原点且尺寸为1x1x1）
                 float3 startPos = i.objectVertex + 0.5f; // 映射到 [0,1] 纹理空间
                 
