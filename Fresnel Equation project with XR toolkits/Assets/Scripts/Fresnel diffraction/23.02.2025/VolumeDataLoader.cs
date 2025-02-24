@@ -62,6 +62,12 @@ public class VolumeDataLoader : MonoBehaviour
         if (volumeMaterial != null)
         {
             volumeMaterial.SetTexture("_VolumeTex", volumeTexture);
+
+            // 动态设置其他Shader参数（可选）
+            volumeMaterial.SetFloat("_Alpha", 0.05f);
+            volumeMaterial.SetFloat("_StepSize", 0.01f);
+            
+            Debug.Log("3D纹理已应用到指定 volumeMaterial！");
         }
         else
         {
