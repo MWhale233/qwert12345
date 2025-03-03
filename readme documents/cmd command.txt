@@ -1,0 +1,9 @@
+"C:\Program Files\Virtual Desktop Streamer\VirtualDesktop.Streamer.exe" "D:\Unity\2021.3.26f1\Editor\2021.3.26f1\Editor\Unity.exe" -projectpath "D:\Codes\qwert12345\qwert12345\fresnel-vr -cloudEnvironment"
+
+
+boot procedure:
+1. run Virtual Desktop on meta quest
+2. run the cmd line above with Unity project closed
+3. press the run button in Unity project, we could see a dark screen in VR headset
+4. enter the lobby through laptop
+5. we can see Unity streaming with VR through same wifi wirelessly
