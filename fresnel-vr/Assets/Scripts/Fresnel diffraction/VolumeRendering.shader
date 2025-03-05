@@ -14,7 +14,17 @@ Shader "Custom/VolumeRendering" {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            // 在 CGPROGRAM 开头添加
+            #pragma multi_compile_instancing
+            #pragma instancing_options procedural:setup
+
             #include "UnityCG.cginc"
+            // 添加立体渲染支持
+            #if defined(UNITY_STEREO_INSTANCING_ENABLED)
+                #define UNITY_VERTEX_OUTPUT_STEREO
+                #include "UnityStereoGlobals.cginc"
+            #endif
+
 
             sampler3D _VolumeTex;
             float _StepSize;
@@ -27,6 +37,7 @@ Shader "Custom/VolumeRendering" {
 
             struct v2f {
                 float4 pos : SV_POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID // ← 添加实例ID
                 float3 rayOrigin : TEXCOORD0;
                 float3 rayDir : TEXCOORD1;
             };
@@ -35,6 +46,8 @@ Shader "Custom/VolumeRendering" {
             // 将相机位置转换到物体空间，得到射线起点；再由物体空间顶点计算射线方向。
             v2f vert (appdata v) {
                 v2f o;
+                UNITY_SETUP_INSTANCE_ID(v); // ← 初始化实例
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); // ← 初始化立体输出
                 o.pos = UnityObjectToClipPos(v.vertex);
 
                 // 获取相机在世界空间的位置，并转换到物体空间

@@ -1,5 +1,8 @@
 "C:\Program Files\Virtual Desktop Streamer\VirtualDesktop.Streamer.exe" "D:\Unity\2021.3.26f1\Editor\2021.3.26f1\Editor\Unity.exe" -projectpath "D:\Codes\qwert12345\qwert12345\fresnel-vr -cloudEnvironment"
 
+"C:\Program Files\Virtual Desktop Streamer\VirtualDesktop.Streamer.exe" "D:\Unity\2021.3.26f1\Editor\2021.3.26f1\Editor\Unity.exe" -projectpath "D:\Codes\qwert12345\Bran -cloudEnvironment"
+
+
 
 boot procedure:
 1. run Virtual Desktop on meta quest

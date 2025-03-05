@@ -15,6 +15,7 @@ public class VolumeDataLoader : MonoBehaviour
 
     // 用于显示体数据的材质，该材质应使用体渲染 shader
     public Material volumeMaterial;
+    public Material planeMaterial;
 
     void Start()
     {
@@ -75,6 +76,23 @@ public class VolumeDataLoader : MonoBehaviour
         else
         {
             Debug.LogWarning("没有指定 volumeMaterial！");
+        }
+
+        
+        // 将生成的 3D 纹理赋值给材质
+        if (planeMaterial != null)
+        {
+            planeMaterial.SetTexture("_VolumeTex", volumeTexture);
+
+            // 动态设置其他Shader参数（可选）
+            planeMaterial.SetFloat("_Alpha", 0.05f);
+            planeMaterial.SetFloat("_StepSize", 0.01f);
+
+            Debug.Log("3D纹理已应用到指定 planeMaterial");
+        }
+        else
+        {
+            Debug.LogWarning("没有指定 planeMaterial");
         }
     }
 }

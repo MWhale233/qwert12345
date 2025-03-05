@@ -19,16 +19,22 @@ Shader "Custom/SectionPlane"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+
             #include "UnityCG.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+    
+                UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
             };
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO //Insert
                 float3 worldPos : TEXCOORD0;
                 float3 localPos : TEXCOORD1;
             };
@@ -42,14 +48,23 @@ Shader "Custom/SectionPlane"
             v2f vert (appdata v)
             {
                 v2f o;
+
+                UNITY_SETUP_INSTANCE_ID(v); //Insert
+                UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
+
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.localPos = mul(_VolumeWorldToLocal, float4(o.worldPos, 1)).xyz; // 修正点：补充右括号
                 return o;
             }
 
+            UNITY_DECLARE_SCREENSPACE_TEXTURE(_MainTex); //Insert
+
             fixed4 frag (v2f i) : SV_Target
             {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
+                
                 // 采样体积数据
                 float3 uv = i.localPos + 0.5f;
                 float4 data = tex3D(_VolumeTex, uv);

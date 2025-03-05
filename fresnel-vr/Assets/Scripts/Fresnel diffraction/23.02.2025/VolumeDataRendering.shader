@@ -29,6 +29,7 @@ Shader "Unlit/VolumeDataRendering"
             #pragma vertex vert
             #pragma fragment frag
 
+
             // 在CGPROGRAM添加
             #pragma shader_feature _CLIPPING
             float4 _ClipPlane;
@@ -44,13 +45,20 @@ Shader "Unlit/VolumeDataRendering"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+    
+                UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
             };
 
             struct v2f
             {
-                float4 vertex : SV_POSITION;
                 float3 objectVertex : TEXCOORD0;
                 float3 vectorToSurface : TEXCOORD1;
+
+
+                float4 vertex : SV_POSITION;
+                
+                UNITY_VERTEX_OUTPUT_STEREO //Insert
             };
 
             // sampler3D _MainTex;
@@ -64,6 +72,10 @@ Shader "Unlit/VolumeDataRendering"
             v2f vert (appdata v)
             {
                 v2f o;
+                
+                UNITY_SETUP_INSTANCE_ID(v); //Insert
+                UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
 
                 // 对象空间中的顶点将成为光线追踪的起点
                 o.objectVertex = v.vertex;
@@ -75,6 +87,8 @@ Shader "Unlit/VolumeDataRendering"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
+
+            UNITY_DECLARE_SCREENSPACE_TEXTURE(_MainTex); //Insert
 
             float4 BlendUnder(float4 color, float4 newColor)
             {
@@ -116,6 +130,8 @@ Shader "Unlit/VolumeDataRendering"
             // }
             fixed4 frag(v2f i) : SV_Target
             {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
+
                 // 转换到世界空间
                 float3 worldPos = mul(unity_ObjectToWorld, float4(i.objectVertex, 1)).xyz;
                 // 平面剪切计算

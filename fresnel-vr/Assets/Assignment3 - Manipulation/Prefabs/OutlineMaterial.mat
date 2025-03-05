@@ -7,10 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ApertureVolumeData
-  m_Shader: {fileID: 4800000, guid: d51f43a13be37dd4287383e43345ac6b, type: 3}
-  m_ValidKeywords:
-  - _CLIPPING
+  m_Name: OutlineMaterial
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -57,39 +56,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _VolumeTex:
-        m_Texture: {fileID: 11700000, guid: b50e57fdfb42bed4c9f688530d368b78, type: 2}
-        m_Scale: {x: 0, y: 1}
-        m_Offset: {x: 0.07, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.05
     - _BumpScale: 1
-    - _Clipping: 1
     - _Cutoff: 0.5
-    - _Density: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxSteps: 200
     - _Metallic: 0
     - _Mode: 0
-    - _NumSteps: 100
     - _OcclusionStrength: 1
+    - _Outline: 0.1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StepScale: 0.01
-    - _StepSize: 0.01
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _ClipPlane: {r: 0, g: 0.99958885, b: -0.028672393, a: 3.30635}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8867924, g: 0.43001068, b: 0.43001068, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LeftEyeColor: {r: 0, g: 1, b: 0, a: 1}
-    - _RightEyeColor: {r: 1, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
