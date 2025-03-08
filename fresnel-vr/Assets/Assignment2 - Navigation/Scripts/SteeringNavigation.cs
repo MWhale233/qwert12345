@@ -10,7 +10,7 @@ public class SteeringNavigation : MonoBehaviour
     public Transform navigationOrigin;
     public Transform steeringHand;
 
-    public float moveSpeed = 2f;
+    public float moveSpeed = 150f;
     private float moveThreshhold = 0.05f;
 
     // Start is called before the first frame update

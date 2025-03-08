@@ -26,7 +26,7 @@ Shader "Custom/SectionPlane"
             struct appdata
             {
                 float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
+                // float2 uv : TEXCOORD0;
     
                 UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
             };
@@ -64,7 +64,7 @@ Shader "Custom/SectionPlane"
             fixed4 frag (v2f i) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
-                
+
                 // 采样体积数据
                 float3 uv = i.localPos + 0.5f;
                 float4 data = tex3D(_VolumeTex, uv);

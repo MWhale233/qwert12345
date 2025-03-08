@@ -25,6 +25,7 @@ public class SectionPlaneController : MonoBehaviour
     // 保存原始分界线参数
     private float originalLineWidth;
     private Color originalLineColor;
+    
 
     void Start()
     {
@@ -56,7 +57,8 @@ public class SectionPlaneController : MonoBehaviour
         }
     }
 
-    void UpdateShaderParams()
+    // 将 UpdateShaderParams 改为 public
+    public void UpdateShaderParams()
     {
         switch(currentMode)
         {
@@ -137,5 +139,15 @@ public class SectionPlaneController : MonoBehaviour
     {
         planeMaterial.SetFloat("_LineWidth", originalLineWidth);
         planeMaterial.SetColor("_LineColor", originalLineColor);
+    }
+
+    public void UpdateMaterials(Material newVolumeMaterial, Material newPlaneMaterial)
+    {
+        volumeMaterial = newVolumeMaterial;
+        planeMaterial = newPlaneMaterial;
+
+        // 重新应用材质参数
+        UpdateShaderParams();
+        UpdateBoundaryVisibility();
     }
 }

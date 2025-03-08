@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>MathNet.Numerics.MKL.Win-x64</id>
+    <version>3.0.0</version>
+    <title>Math.NET Numerics - MKL Native Provider for Windows (x64)</title>
+    <authors>Christoph Ruegg, Marcus Cuda, Jurgen Van Gael</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">license.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>icon.png</icon>
+    <projectUrl>https://numerics.mathdotnet.com/</projectUrl>
+    <description>Intel oneAPI MKL native libraries for Math.NET Numerics on Windows.</description>
+    <summary>Intel oneAPI MKL native libraries for Math.NET Numerics on Windows.</summary>
+    <releaseNotes>New binary names and package structure with runtime folders
+With Intel oneAPI 2022
+Note that MathNet.Numerics.Providers.MKL.dll is required for this to work with Numerics v5</releaseNotes>
+    <copyright>Copyright Math.NET Project</copyright>
+    <tags>math numeric statistics probability integration interpolation linear algebra matrix fft native mkl</tags>
+    <repository type="git" url="https://github.com/mathnet/mathnet-numerics" />
+    <dependencies>
+      <dependency id="MathNet.Numerics.Providers.MKL" version="5.0.0" />
+    </dependencies>
+  </metadata>
+</package>
