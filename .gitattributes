@@ -1,4 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+#  only track the following big dll from MathNet
+fresnel-vr/Assets/Packages/MathNet.Numerics.MKL.Win.*/libMathNetNumericsMKL.dll filter=lfs diff=lfs merge=lfs -text
 fresnel-vr/Assets/Packages/MathNet.Numerics.MKL.Win-x64.3.0.0/runtimes/win-x64/native/libMathNetNumericsMKL.dll filter=lfs diff=lfs merge=lfs -text
 fresnel-vr/Assets/VolumeTextures/NewGeneratedTexture3D.asset filter=lfs diff=lfs merge=lfs -text
