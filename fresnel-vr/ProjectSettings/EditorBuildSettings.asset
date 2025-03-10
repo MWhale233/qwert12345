@@ -30,5 +30,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Fresnel propagation_23.02.unity
     guid: ec13212fa0b00674b8cc00771b68d95c
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: b607c3358e6161e489183476f798ab4b, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 62e0e3abe5950f842a4437d31ee77e56, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 53f10e5ede4f01c4a82a76f175227d18, type: 2}
