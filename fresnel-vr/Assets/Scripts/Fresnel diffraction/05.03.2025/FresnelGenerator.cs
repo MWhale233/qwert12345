@@ -6,6 +6,8 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.IntegralTransforms;
 using System.Runtime.InteropServices;
 
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem;
 
 #if UNITY_EDITOR
