@@ -8,27 +8,30 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/VRSYS/Core/Scenes/VRSYS-3DUI.unity
     guid: b696740ea170a5840baa71d36430d7a2
-  - enabled: 1
+  - enabled: 0
     path: Assets/VRSYS/Core/Scenes/VRSYS-DesktopUI.unity
     guid: 52c302e3c82af8249914ea079bf2aa33
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Assignment-01-Build-Your-World.unity
     guid: 3eb38f32eefed1043a35c3c941a3c6c7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Fresnel Eq. with VR.unity
     guid: 9031f9ca8cf56b94ca3fd3771fdf1144
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Fresnel diffraction_yellow.unity
     guid: af73f181066c0664eb5cbbe3a95c0ef8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Fresnel diffraction_Volume_deepseek.unity
     guid: f9cd44526ad385b4fb1a9bbb2cdfdf57
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Fresnel propagation_17.02_modified.unity
     guid: 84bbc3bfcdfcd6e43a0e6f6734936601
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Fresnel propagation_23.02.unity
     guid: ec13212fa0b00674b8cc00771b68d95c
+  - enabled: 1
+    path: Assets/Scenes/Fresnel propagation_11.03.unity
+    guid: 96c86c1ab005e774fb72d57686f0efa4
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: b607c3358e6161e489183476f798ab4b, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 62e0e3abe5950f842a4437d31ee77e56, type: 2}

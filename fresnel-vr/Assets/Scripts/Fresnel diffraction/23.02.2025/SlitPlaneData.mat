@@ -83,5 +83,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _PlaneEquation: {r: 0, g: 0.99958885, b: -0.028672393, a: 3.30635}
+    - _PlaneEquation: {r: 0, g: 0.99958885, b: -0.028672393, a: 3.3063474}
   m_BuildTextureStacks: []

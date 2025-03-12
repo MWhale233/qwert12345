@@ -59,19 +59,6 @@ public class FresnelGenerator : MonoBehaviour
         InitializeAperture();
     }
 
-    void Update()
-    {
-        HandleVRInput();
-    }
-
-    void HandleVRInput()
-    {
-        if (radiusAction.action.IsPressed())
-        {
-            radius = radius + 0.0002f;
-            GenerateVolume();
-        }
-    }
 
 
     void InitializeAperture()
@@ -100,12 +87,25 @@ public class FresnelGenerator : MonoBehaviour
     {
         if (!isCalculating)
         {
+            InitializeAperture();
             StartCoroutine(CalculateDiffractionVolume());
         }
         
     }
 
-    
+    // 修改后的方法
+    public void ChangeAperture(float newRadius)
+    {
+        // 应用Slider的值并限制范围
+        radius = Mathf.Clamp(newRadius * 0.0001f, 0.0001f, 0.0009f);
+        
+        // 更新孔径形状
+        InitializeAperture();
+        
+        // 如果需要实时更新衍射效果（根据性能需求决定是否启用）
+        // if (!isCalculating) StartCoroutine(CalculateDiffractionVolume());
+    }
+        
         
     IEnumerator CalculateDiffractionVolume()
     {

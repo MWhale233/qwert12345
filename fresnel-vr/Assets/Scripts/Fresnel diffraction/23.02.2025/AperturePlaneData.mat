@@ -69,7 +69,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _LineWidth: 0.0582
+    - _LineWidth: 0.01
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -83,5 +83,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _PlaneEquation: {r: 0, g: 0.99958885, b: -0.028672393, a: -5.15367}
+    - _PlaneEquation: {r: 0, g: 0.99958885, b: -0.028672393, a: 0.45333612}
   m_BuildTextureStacks: []

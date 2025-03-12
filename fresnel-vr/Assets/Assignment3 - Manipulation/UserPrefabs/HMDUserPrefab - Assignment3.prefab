@@ -706,7 +706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1494578262385753884
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2032,7 +2032,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2263,7 +2263,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2768,8 +2768,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 4069951530690200774, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   navigationOrigin: {fileID: 7216047633976425185}
-  steeringHand: {fileID: 5848668381540053003}
-  moveSpeed: 50
+  steeringHand: {fileID: 3152677224536138645}
+  moveSpeed: 1
 --- !u!1 &7216047634103647853
 GameObject:
   m_ObjectHideFlags: 0
